@@ -22,6 +22,22 @@ jobs:
       with:
         version: v2.3.0
 
+  ltp-fault-injection-cros-kernel:
+    runs-on: ubuntu-latest
+    env:
+      # default value, will be overwritten
+      EXTRA_KIRK_ARGS: "-F 50"
+    steps:
+      - name: Generate random fault injection arg
+        run: |
+          # Generate random number between 1-100
+          echo "EXTRA_KIRK_ARGS=-F $(( ( RANDOM % 100 ) + 1 ))" >> $GITHUB_ENV
+          echo "Using EXTRA_KIRK_ARGS=$EXTRA_KIRK_ARGS"
+
+      - name: Print random value
+        run: |
+          echo "Random EXTRA_KIRK_ARGS: $EXTRA_KIRK_ARGS"
+          
   man-page:
     name: Check if man page has been regenerated
     runs-on: ubuntu-latest
